@@ -4,7 +4,7 @@
 
 This project was developed as part of the **Cloud Computing Competition (CCC’26)** and demonstrates a highly scalable, 100% serverless microservices architecture.
 
-## 🏗 Architecture & Tech Stack
+## 🏗️ Architecture & Tech Stack
 
 Our architecture follows the "Serverless First" principle to guarantee massive scalability and reduce idle costs to almost €0.00.
 
