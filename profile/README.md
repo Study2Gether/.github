@@ -7,8 +7,6 @@ This project is being developed as part of the **Cloud Computing Competition (CC
 
 ## ✨ Core Features (MVP Scope)
 
-To ensure a robust, secure, and well-architected cloud infrastructure within the competition timeframe, the application intentionally focuses on a streamlined Minimum Viable Product (MVP) feature set, tailored specifically for the HHN student body:
-
 **For Students (Web Client)**
 * **Student Profiles:** Clean profile creation including a display name, a short bio, and multiple profile pictures.
 * **HHN Compatibility (The Local Edge):** Profiles include campus-specific icebreakers. Students select their ultimate Mensa Food (e.g., "Vegan Power Bowl" or "Currywurst Fanatic") and their favorite Campus Spot (e.g., LIV Library, Neckarbogen). Shared preferences are highlighted to make the first real-life meetup frictionless!
