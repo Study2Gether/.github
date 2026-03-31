@@ -1,11 +1,5 @@
 # Study2Gether
 
-<p align="center">
-  <img src="images/mockup.png" width="320" alt="Mockup">
-  <br>
-  <em>A full mockup can be found <a href="https://stitch.withgoogle.com/projects/16163511515640605848" target="_blank">here</a></em>
-</p>
-
 > **Never study alone. Find your focus, build your streak.**
 
 Study2Gether is an app made for uni students who are tired of studying alone. We took that familiar left/right swiping mechanic you already know and applied it to finding the perfect study buddy.
@@ -16,6 +10,11 @@ Before you start swiping through profiles, you can set up exactly what kind of s
 
 Once you both swipe right on each other, it's a match! Using a time and place proposal form you can figure out when and where to study. To keep you motivated and actually hitting the books, we've got a built-in streak system. The more days a week you study, the higher your rank climbs (like hitting Silver, Gold, or Diamond).
 
+<p align="center">
+  <img src="images/mockup.png" width="240" alt="Mockup">
+  <br>
+  <em>A full mockup can be found <a href="https://stitch.withgoogle.com/projects/16163511515640605848" target="_blank">here</a></em>
+</p>
 
 ## Core Features
 * **Web-First Experience:** A fully responsive website accessible from any browser.
