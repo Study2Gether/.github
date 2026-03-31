@@ -1,6 +1,10 @@
 # Study2Gether
 
-![Mockup](images/mockup.png)
+<p align="center">
+  <img src="images/mockup.png" width="320" alt="Mockup">
+  <br>
+  <em>Figure 1: Player punching projected targets.</em>
+</p>
 
 A full mockup can be found [here](https://stitch.withgoogle.com/projects/16163511515640605848)
 
@@ -63,10 +67,10 @@ flowchart TD
   User -->|HTTPS| CDN
   Admin -->|HTTPS| CDN
   CDN --> S3Front
-  
+
   User -->|Auth / JWT| Cognito
   Admin -->|Auth / JWT| Cognito
-  
+
   User -->|REST API| APIGW
   Admin -->|REST API| APIGW
 
