@@ -13,7 +13,7 @@ Once you both swipe right on each other, it's a match! Using a time and place pr
 <p align="center">
   <img src="images/mockup.png" width="240" alt="Mockup">
   <br>
-  <em>A full mockup can be found <a href="https://stitch.withgoogle.com/projects/16163511515640605848" target="_blank">here</a></em>
+  <em>Mockup</em>
 </p>
 
 ## Core Features
