@@ -10,6 +10,18 @@ Before you start swiping through profiles, you can set up exactly what kind of s
 
 Once you both swipe right on each other, it's a match! In a private chat you can figure out when and where to study. To keep you motivated and actually hitting the books, we've got a built-in streak system. The more days a week you study, the higher your rank climbs (like hitting Silver, Gold, or Diamond).
 
+
+## Core Features
+* **Web-First Experience:** A fully responsive website accessible from any browser.
+* **Account Creation:** Secure user sign-up and authentication via email.
+* **Individual Profiles:** Users can set up their profiles with multiple pictures, a personal bio, and selectable subjects they are interested in.
+* **Dual Study Modes:** The ability to toggle between "Subject-Specific Mode" (finding someone studying the exact same topic) and "Flex Mode" (matching with anyone).
+* **Discovery & Swiping:** An intuitive, card-based feed where users can swipe left to pass or right to connect with potential study partners.
+* **Private Match Chat:** Once a mutual match occurs (both users swipe right), a secure, real-time messaging interface unlocks to coordinate the meetup.
+* **QR Code Meetup Verification:** To ensure sessions actually happen and streaks remain legit, the site generates a unique QR code when you meet up. Your buddy scans it to verify the session, track the time, and securely update your ranks.
+* **Gamified Streaks & Rankings:** A dynamic tracking system that rewards consistent study habits. Meeting up regularly builds your streak and promotes you through visual ranks (e.g., Silver, Gold, Diamond).
+* **Admin Dashboard:** A separate, restricted interface for platform administrators to manage users, review flagged profiles, and oversee the platform's general activity.
+
 ## System Architecture
 
 <p align="center">
