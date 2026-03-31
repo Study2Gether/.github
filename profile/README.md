@@ -1,86 +1,46 @@
-# CloudCrushHHN - Dating App for Heilbronn University
+# Study2Gether
 
-**CloudCrushHHN** is the goto dating and networking app for students of Heilbronn University (HHN).
-**Our goal:** Bringing students together across different study programs, whether for a date in the campus cafeteria or a shared late-night study session in the LIV library.
+...
 
-This project is being developed as part of the **Cloud Computing Competition (CCC’26)** and demonstrates a highly scalable, 100% serverless microservices architecture.
+## Architecture Diagram
 
-## Core Features (MVP Scope)
-
-**For Students (Web Client)**
-* **Student Profiles:** Clean profile creation including a display name, a short bio, and multiple profile pictures.
-* **HHN Compatibility (The Local Edge):** Profiles include campus-specific icebreakers. Students select their ultimate Mensa Food (e.g., "Vegan Power Bowl" or "Currywurst Fanatic") and their favorite Campus Spot (e.g., LIV Library, Neckarbogen). Shared preferences are highlighted to make the first real-life meetup frictionless!
-* **Different Matching Modes**: Different matching modes, like Buddy, Coffee and Biz mode.
-* **The Swipe Engine:** The core discovery mechanic, swipe right to connect, swipe left to pass.
-* **Match Notifications:** Instant event-driven notification when a mutual "Right Swipe" occurs.
-
-**For Administrators (Web Admin)**
-* **Live Metrics:** Real-time tracking of total registered users, active swipes, successful match counts, and trending campus spots.
-* **System Observability:** A secure dashboard to monitor platform usage and distributed system health.
-
----
-
-## Architecture & Tech Stack
-
-Our architecture follows the "Serverless First" principle to guarantee massive scalability and reduce idle costs to almost €0.00.
-
-* **Frontend & UX:** React (Progressive Web App / Mobile-First)
-* **Hosting:** AWS S3 + Amazon CloudFront (CDN)
-* **Identity & Access Management (IAM):** Amazon Cognito (RBAC: User & Admin Roles)
-* **API Routing:** Amazon API Gateway
-* **Compute Services:**
-  * User Service: AWS Lambda (Serverless)
-  * Matching Service: AWS Lambda (Serverless for scalable swipe logic)
-  * Notification/Metrics Service: AWS Lambda
-* **Databases:** Amazon DynamoDB (NoSQL for millisecond latency)
-* **Asynchronous Communication:** Amazon SQS (Decoupling of services)
-* **Infrastructure as Code (IaC):** Terraform
-* **Monitoring & Observability:** AWS CloudWatch & AWS X-Ray (Distributed Tracing)
-
-### Architecture Diagram
-
-```mermaid
 graph TD
-    %% User Interfaces & CDN
-    subgraph "Frontend & Edge"
-        UI[Web Clients <br/> Student & Admin] -->|HTTPS| CDN[AWS CloudFront + S3]
+    %% User Interfaces & Access
+    subgraph "Frontend & Identity"
+        CDN[AWS CloudFront + S3 SPA] -->|HTTPS| UI[Web Client: Student, Admin, Jury]
+        UI -->|Sign Up / Sign In| Auth[Amazon Cognito]
     end
 
-    %% Security & API
-    CDN -->|Login| Auth[Amazon Cognito]
-    CDN -->|API Requests| API[Amazon API Gateway]
-    API -.->|Validates Token| Auth
-
-    %% Serverless Microservices
-    subgraph "Backend Services"
-        API --> UserService[User Profile Lambda]
-        API --> MatchService[Swipe Engine Lambda]
-        
-        %% Asynchronous Flow
-        MatchService -->|Match Event| SQS[SQS Queue]
-        SQS --> MetricsService[Admin Metrics Lambda]
+    %% Central API
+    subgraph "API Gateway"
+        UI -->|API Requests with JWT| API[Amazon API Gateway]
+        API -.->|Validates Token & Roles| Auth
     end
 
-    %% Data Storage
-    subgraph "Data Layer"
-        UserService --> DB_Users[(DynamoDB: Users)]
-        MatchService --> DB_Swipes[(DynamoDB: Swipes)]
-        MetricsService --> DB_Stats[(DynamoDB: Stats)]
+    %% Distributed Backend Microservices
+    subgraph "Distributed Microservices"
+        API -->|Role: Student, Admin| S_Team[Team & Proposal Lambda]
+        API -->|Role: Student| S_Sub[Submission Lambda]
+        API -->|Role: Admin, Jury| S_Grade[Jury Grading Lambda]
     end
 
-    %% Note for DevOps
-    classDef devops fill:transparent,stroke-dasharray: 5 5,stroke-width:2px;
-    class devops Note;
-    %% A simple floating note replaces all the messy dotted lines
-    Note[<b>DevOps & Observability:</b> <br/> Provisioned via Terraform <br/> Monitored via CloudWatch & X-Ray]:::devops
+    %% Data Layer
+    subgraph "Data & Object Layer"
+        S_Team <--> DB_Core[(DynamoDB: Teams, Proposals)]
+        S_Sub <--> S3_Files[(S3 Bucket: Diagrams, Presentations)]
+        S_Grade <--> DB_Core
+    end
+
+    %% Operations
+    subgraph "Observability & IaC"
+        Observability[AWS CloudWatch & X-Ray <br/> Monitoring, Logging, Tracing]
+        IaC[Provisioned via Terraform]
+    end
+
+    %% Connect Observability to relevant nodes
+    S_Team -.-> Observability
+    S_Sub -.-> Observability
+    S_Grade -.-> Observability
+    DB_Core -.-> Observability
+    S3_Files -.-> Observability
 ```
-
-## Repository Structure & Modules
-
-The CloudCrushHHN ecosystem is organized into three main repositories to ensure a clean separation of concerns. Please refer to their specific READMEs for detailed technical documentation and local setup instructions.
-
-| Repository | Technology | Description | Documentation |
-| :--- | :--- | :--- | :--- |
-| **`cloudcrush-core`** | Terraform / AWS Lambda | The engine of the platform. This monorepo contains the complete Infrastructure as Code (IaC) alongside the source code for all backend microservices. | [View README](https://github.com/CloudCrushHHN/cloudcrush-core/blob/main/README.md) |
-| **`cloudcrush-web-client`** | React / PWA | The student-facing frontend. A Mobile-First Progressive Web App (PWA) that acts as the primary dating and swiping interface. | [View README](https://github.com/CloudCrushHHN/cloudcrush-web-client/blob/main/README.md) |
-| **`cloudcrush-web-admin`** | React | The internal administration frontend. A dashboard for admins to monitor platform metrics and health, secured via Cognito. | [View README](https://github.com/CloudCrushHHN/cloudcrush-web-admin/blob/main/README.md) |
