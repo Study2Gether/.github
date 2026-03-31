@@ -41,46 +41,38 @@ Our architecture follows the "Serverless First" principle to guarantee massive s
 
 ```mermaid
 graph TD
-    %% User Interfaces
-    User[Web Client App] -->|HTTPS| CF[AWS CloudFront]
-    Admin[Web Admin Dashboard] -->|HTTPS| CF
-
-    %% Hosting
-    CF -->|Static Assets| S3[Amazon S3 Frontend Hosting]
-
-    %% Identity Provider
-    User -->|Login/JWT| Cognito[Amazon Cognito IAM]
-    Admin -->|Login/JWT| Cognito
-
-    %% API Layer
-    User -->|API Requests| API[Amazon API Gateway]
-    Admin -->|API Requests| API
-
-    %% Backend Microservices
-    subgraph "AWS Cloud - Serverless Backend"
-        API --> ProfileService[User Service <br/> AWS Lambda]
-        API --> MatchService[Swipe & Match Service <br/> AWS Lambda]
-        API --> AdminService[Admin Metrics Service <br/> AWS Lambda]
-
-        %% Databases
-        ProfileService --> DB_Profile[(DynamoDB: Profiles)]
-        MatchService --> DB_Match[(DynamoDB: Swipes)]
-
-        %% Asynchronous Event Handling
-        MatchService -->|Match Event| SQS[Amazon SQS Queue]
-        SQS --> AdminService
-        AdminService --> DB_Stats[(DynamoDB: Statistics)]
+    %% User Interfaces & CDN
+    subgraph "Frontend & Edge"
+        UI[Web Clients <br/> Student & Admin] -->|HTTPS| CDN[AWS CloudFront + S3]
     end
 
-    %% Monitoring & DevOps
-    subgraph "DevOps & Observability"
-        TF[Terraform IaC] -.->|Deploys| Cognito
-        TF -.->|Deploys| API
-        TF -.->|Deploys| S3
+    %% Security & API
+    CDN -->|Login| Auth[Amazon Cognito]
+    CDN -->|API Requests| API[Amazon API Gateway]
+    API -.->|Validates Token| Auth
 
-        CW[AWS CloudWatch & X-Ray] -.->|Monitors| ProfileService
-        CW -.->|Monitors| MatchService
+    %% Serverless Microservices
+    subgraph "Backend Services"
+        API --> UserService[User Profile Lambda]
+        API --> MatchService[Swipe Engine Lambda]
+        
+        %% Asynchronous Flow
+        MatchService -->|Match Event| SQS[SQS Queue]
+        SQS --> MetricsService[Admin Metrics Lambda]
     end
+
+    %% Data Storage
+    subgraph "Data Layer"
+        UserService --> DB_Users[(DynamoDB: Users)]
+        MatchService --> DB_Swipes[(DynamoDB: Swipes)]
+        MetricsService --> DB_Stats[(DynamoDB: Stats)]
+    end
+
+    %% Note for DevOps
+    classDef devops fill:transparent,stroke-dasharray: 5 5,stroke-width:2px;
+    class devops Note;
+    %% A simple floating note replaces all the messy dotted lines
+    Note[<b>DevOps & Observability:</b> <br/> Provisioned via Terraform <br/> Monitored via CloudWatch & X-Ray]:::devops
 ```
 
 ## Repository Structure & Modules
